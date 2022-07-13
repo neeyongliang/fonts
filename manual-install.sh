@@ -1,13 +1,22 @@
 #!/bin/sh
 
+# Author:      neeyongliang
+# Description: install font by manual
+# Release:     2022.07.13
+
 fontsDir="/usr/share/fonts"
 customFontDir="$fontsDir/truetype/custom"
 
-if [ -d $fontsDir/truetype ]; then
-    sudo mkdir -p $customFontDir
-    sudo cp *.ttf $customFontDir
-    cd /usr/share/fonts || exit
-    sudo mkfontscale
-    sudo mkfontdir
-    sudo fc-cache -fv
+if [ $USER != "root" ]; then
+    echo "Error: please use root account"
+    exit 2
 fi
+
+if [ ! -d $fontsDir/truetype ]; then
+    mkdir -p $customFontDir
+fi
+
+cp *.ttf $customFontDir
+mkfontscale
+mkfontdir
+fc-cache -fv
